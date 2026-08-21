@@ -11,6 +11,7 @@ const updateButton = document.querySelector("#updateButton");
 const playButton = document.querySelector("#playButton");
 
 let latestManifest = null;
+let clientReadyToPlay = false;
 
 function hasTauri() {
   return Boolean(window.__TAURI__?.core?.invoke);
@@ -63,6 +64,11 @@ function setProgress(value) {
   progressBar.style.width = `${Math.max(0, Math.min(100, value))}%`;
 }
 
+function setClientReadyToPlay(isReady) {
+  clientReadyToPlay = isReady;
+  playButton.disabled = !clientReadyToPlay;
+}
+
 function renderChangelog(items = []) {
   changelog.innerHTML = "";
   const safeItems = items.length ? items : ["Sem changelog publicado para esta versao."];
@@ -83,6 +89,8 @@ async function checkUpdates() {
   setProgress(12);
   setStatus("Verificando atualizações", "Consultando o manifesto mais recente do cliente.");
   checkButton.disabled = true;
+  updateButton.disabled = true;
+  setClientReadyToPlay(false);
 
   try {
     const manifestUrl = `${MANIFEST_URL}?t=${Date.now()}`;
@@ -94,13 +102,16 @@ async function checkUpdates() {
     if (latestManifest.needsUpdate) {
       setStatus("Atualização disponível", "Baixe a nova versão antes de entrar no jogo.");
       updateButton.disabled = false;
+      setClientReadyToPlay(false);
     } else {
       setStatus("Cliente atualizado", "Você já está com a versão mais recente.");
       updateButton.disabled = true;
+      setClientReadyToPlay(true);
     }
   } catch (error) {
     setProgress(0);
     setStatus("Falha ao verificar", String(error));
+    setClientReadyToPlay(false);
   } finally {
     checkButton.disabled = false;
   }
@@ -114,20 +125,28 @@ async function installUpdate() {
   setProgress(8);
   setStatus("Baixando atualização", "Aguarde enquanto o launcher prepara o cliente.");
   updateButton.disabled = true;
+  setClientReadyToPlay(false);
 
   try {
     await invoke("install_update", { manifest: latestManifest });
     setProgress(100);
     await loadLocalVersion();
     setStatus("Atualização concluída", "Cliente pronto para jogar.");
+    setClientReadyToPlay(true);
   } catch (error) {
     setProgress(0);
     setStatus("Erro ao atualizar", String(error));
     updateButton.disabled = false;
+    setClientReadyToPlay(false);
   }
 }
 
 async function play() {
+  if (!clientReadyToPlay) {
+    setStatus("Verifique as atualizações", "Atualize o cliente antes de jogar.");
+    return;
+  }
+
   setStatus("Abrindo cliente", "Iniciando Naruto Old War.");
 
   try {
