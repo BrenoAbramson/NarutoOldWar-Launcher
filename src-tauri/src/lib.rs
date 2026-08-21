@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::{
     env,
     fs::{self, File},
@@ -13,15 +14,19 @@ const LOCAL_VERSION_FILE: &str = "launcher-version.json";
 #[serde(rename_all = "camelCase")]
 struct UpdateManifest {
     version: String,
+    #[serde(default, alias = "notes")]
     changelog: Vec<String>,
+    #[serde(default)]
     windows: PlatformPackage,
+    #[serde(default)]
     macos: PlatformPackage,
     #[serde(default)]
     needs_update: bool,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
 struct PlatformPackage {
+    #[serde(default)]
     url: String,
 }
 
@@ -107,6 +112,24 @@ fn platform_url(manifest: &UpdateManifest) -> String {
     }
 }
 
+fn normalize_manifest(mut value: Value) -> Result<UpdateManifest, String> {
+    if let Some(platforms) = value.get("platforms").cloned() {
+        if value.get("macos").is_none() {
+            if let Some(macos) = platforms.get("macos") {
+                value["macos"] = macos.clone();
+            }
+        }
+
+        if value.get("windows").is_none() {
+            if let Some(windows) = platforms.get("windows") {
+                value["windows"] = windows.clone();
+            }
+        }
+    }
+
+    serde_json::from_value::<UpdateManifest>(value).map_err(|error| error.to_string())
+}
+
 fn extract_zip(zip_path: &Path, destination: &Path) -> Result<(), String> {
     let file = File::open(zip_path).map_err(|error| error.to_string())?;
     let mut archive = zip::ZipArchive::new(file).map_err(|error| error.to_string())?;
@@ -141,10 +164,15 @@ fn get_local_version() -> String {
 
 #[tauri::command(rename_all = "camelCase")]
 fn check_updates(manifest_url: String) -> Result<UpdateManifest, String> {
-    let mut manifest = reqwest::blocking::get(manifest_url)
+    let value = reqwest::blocking::Client::new()
+        .get(manifest_url)
+        .header("Cache-Control", "no-cache")
+        .header("Pragma", "no-cache")
+        .send()
         .map_err(|error| error.to_string())?
-        .json::<UpdateManifest>()
+        .json::<Value>()
         .map_err(|error| error.to_string())?;
+    let mut manifest = normalize_manifest(value)?;
 
     manifest.needs_update = manifest.version != read_local_version();
     Ok(manifest)

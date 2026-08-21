@@ -85,7 +85,8 @@ async function checkUpdates() {
   checkButton.disabled = true;
 
   try {
-    latestManifest = await invoke("check_updates", { manifestUrl: MANIFEST_URL });
+    const manifestUrl = `${MANIFEST_URL}?t=${Date.now()}`;
+    latestManifest = await invoke("check_updates", { manifestUrl });
     remoteVersion.textContent = `Online: ${latestManifest.version}`;
     renderChangelog(latestManifest.changelog);
     setProgress(latestManifest.needsUpdate ? 45 : 100);
