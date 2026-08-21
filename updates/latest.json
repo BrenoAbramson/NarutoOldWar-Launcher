@@ -1,16 +1,14 @@
 {
   "version": "1.0.1",
-  "notes": [
+  "changelog": [
     "Atualizacao de teste do launcher.",
     "Adicionado arquivo marcador update-test-1.0.1.txt dentro do cliente.",
     "Use esta versao apenas para validar se o launcher baixa e aplica atualizacoes."
   ],
-  "platforms": {
-    "macos": {
-      "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.1/OTClient-macos.zip"
-    },
-    "windows": {
-      "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.0/OTClient-windows.zip"
-    }
+  "windows": {
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.0/OTClient-windows.zip"
+  },
+  "macos": {
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.1/OTClient-macos.zip"
   }
 }
