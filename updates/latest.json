@@ -5,10 +5,11 @@
     "Volume da musica configurado para 10.",
     "Servidor padrao definido como 100.120.164.98.",
     "Porta padrao definida como 7171.",
-    "Versao do client definida como 781."
+    "Versao do client definida como 781.",
+    "Pacote de atualizacao Windows publicado."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.0/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.2/OTClient-windows.zip"
   },
   "macos": {
     "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.2/OTClient-macos.zip"
