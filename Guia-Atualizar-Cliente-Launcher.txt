@@ -1,0 +1,218 @@
+GUIA - COMO SUBIR ATUALIZACAO DO CLIENTE PARA O LAUNCHER
+
+Pasta base:
+/Users/abramson/Documents/Nosso_servidor
+
+Objetivo:
+Gerar um ZIP novo do cliente, subir esse ZIP em uma Release do GitHub e atualizar o arquivo
+updates/latest.json para o launcher baixar a nova versao.
+
+
+1) Antes de comecar
+
+Use sempre estes nomes:
+
+- Windows: OTClient-windows.zip
+- Mac: OTClient-macos.zip
+
+Nao coloque a versao no nome do ZIP. A versao fica no nome da release e no latest.json.
+
+Exemplo de versao:
+1.0.5
+
+Exemplo de tag da release:
+client-1.0.5
+
+
+2) Preparar os arquivos do cliente Windows
+
+Entre na pasta base:
+
+cd "/Users/abramson/Documents/Nosso_servidor"
+
+Crie uma pasta nova para a versao:
+
+mkdir -p "dist-download/update-1.0.5/windows-client"
+
+Copie o cliente Windows completo para esta pasta:
+
+cp -R "CAMINHO_DA_PASTA_DO_CLIENTE_WINDOWS/"* "dist-download/update-1.0.5/windows-client/"
+
+Importante:
+A pasta windows-client precisa ter tudo que o jogador precisa para abrir o jogo, por exemplo:
+
+- OTClient.exe
+- data/
+- modules/
+- init.lua
+- Tibia.dat / tibia.dat dentro de data/things/781/
+- Tibia.spr / tibia.spr dentro de data/things/781/
+
+Se precisar garantir que o Windows use o Tibia.dat e Tibia.spr corretos:
+
+cp "Cliente temporario/Tibia.dat" "dist-download/update-1.0.5/windows-client/data/things/781/tibia.dat"
+cp "Cliente temporario/Tibia.spr" "dist-download/update-1.0.5/windows-client/data/things/781/tibia.spr"
+
+
+3) Criar o ZIP do cliente Windows
+
+Rode:
+
+cd "/Users/abramson/Documents/Nosso_servidor/dist-download/update-1.0.5/windows-client"
+zip -r "../OTClient-windows.zip" .
+
+Depois confira se o ZIP foi criado:
+
+ls -lh "/Users/abramson/Documents/Nosso_servidor/dist-download/update-1.0.5/OTClient-windows.zip"
+
+
+4) Subir o ZIP em uma Release do GitHub
+
+Abra este repositorio no navegador:
+
+https://github.com/BrenoAbramson/NarutoOldWar-Launcher
+
+Va em:
+
+Releases > Draft a new release
+
+Preencha assim:
+
+Tag:
+client-1.0.5
+
+Release title:
+Client 1.0.5
+
+Anexe este arquivo:
+/Users/abramson/Documents/Nosso_servidor/dist-download/update-1.0.5/OTClient-windows.zip
+
+Clique em:
+Publish release
+
+
+5) Atualizar o latest.json
+
+Abra o arquivo:
+
+/Users/abramson/Documents/Nosso_servidor/Launcher-Naruto-Old-War-src/updates/latest.json
+
+Troque a versao e a URL do Windows.
+
+Exemplo:
+
+{
+  "version": "1.0.5",
+  "changelog": [
+    "Descreva aqui a atualizacao feita no cliente."
+  ],
+  "windows": {
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.5/OTClient-windows.zip"
+  },
+  "macos": {
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.2/OTClient-macos.zip"
+  }
+}
+
+Importante:
+Se tambem atualizar o cliente Mac, crie uma release com OTClient-macos.zip e altere a URL do macos tambem.
+
+
+6) Subir o latest.json para o GitHub
+
+Rode:
+
+cd "/Users/abramson/Documents/Nosso_servidor/Launcher-Naruto-Old-War-src"
+git status
+git add updates/latest.json
+git commit -m "Publicar atualizacao do cliente 1.0.5"
+git push origin main
+
+
+7) Testar se o arquivo online mudou
+
+Abra no navegador:
+
+https://raw.githubusercontent.com/BrenoAbramson/NarutoOldWar-Launcher/main/updates/latest.json
+
+Tem que aparecer a versao nova, por exemplo:
+
+"version": "1.0.5"
+
+Se ainda aparecer a versao antiga, pode ser cache do GitHub Raw.
+Espere alguns minutos e teste novamente.
+
+
+8) Testar no launcher
+
+No computador do jogador:
+
+1. Feche o cliente e o launcher.
+2. Abra o launcher.
+3. Clique em Verificar.
+4. Clique em Atualizar.
+5. Depois que terminar, clique em Jogar.
+
+O botao Jogar so deve liberar quando o cliente local estiver atualizado.
+
+
+9) Se o launcher insistir em baixar versao antiga
+
+Isso pode acontecer por cache do raw.githubusercontent.com.
+
+Solucao rapida:
+No GitHub, va na release antiga que o launcher ainda esta baixando.
+Exemplo:
+
+client-1.0.4
+
+Apague o asset antigo OTClient-windows.zip dessa release e envie o ZIP novo com o mesmo nome:
+
+OTClient-windows.zip
+
+Assim, mesmo que o launcher ainda enxergue a versao antiga, ele baixa os arquivos corrigidos.
+
+
+10) Erros comuns
+
+Erro 404 no launcher:
+A URL no latest.json esta errada ou a release/asset nao existe.
+Confira se o link abre no navegador.
+
+Tela azul no mapa:
+Normalmente e Tibia.dat ou Tibia.spr errado/incompativel.
+Garanta que os arquivos corretos estao em:
+data/things/781/tibia.dat
+data/things/781/tibia.spr
+
+Launcher baixa, mas o cliente nao abre:
+O ZIP provavelmente nao tem todos os arquivos necessarios.
+Confira se dentro do ZIP existem OTClient.exe, data, modules e init.lua.
+
+No Mac aparece bloqueio de seguranca:
+Use o guia:
+/Users/abramson/Documents/Nosso_servidor/Guia-Mac-Primeira-Abertura.txt
+
+
+11) Modelo rapido para proxima versao
+
+Troque 1.0.5 pela versao nova:
+
+cd "/Users/abramson/Documents/Nosso_servidor"
+mkdir -p "dist-download/update-1.0.5/windows-client"
+cp -R "CAMINHO_DA_PASTA_DO_CLIENTE_WINDOWS/"* "dist-download/update-1.0.5/windows-client/"
+cp "Cliente temporario/Tibia.dat" "dist-download/update-1.0.5/windows-client/data/things/781/tibia.dat"
+cp "Cliente temporario/Tibia.spr" "dist-download/update-1.0.5/windows-client/data/things/781/tibia.spr"
+cd "dist-download/update-1.0.5/windows-client"
+zip -r "../OTClient-windows.zip" .
+
+Depois:
+1. Crie a release client-1.0.5 no GitHub.
+2. Anexe OTClient-windows.zip.
+3. Edite updates/latest.json.
+4. Rode:
+
+cd "/Users/abramson/Documents/Nosso_servidor/Launcher-Naruto-Old-War-src"
+git add updates/latest.json
+git commit -m "Publicar atualizacao do cliente 1.0.5"
+git push origin main
