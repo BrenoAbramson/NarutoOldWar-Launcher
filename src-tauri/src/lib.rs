@@ -9,6 +9,7 @@ use std::{
 };
 
 const LOCAL_VERSION_FILE: &str = "launcher-version.json";
+const LAUNCHER_APP_NAME: &str = "Naruto Old War Launcher.app";
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -37,12 +38,12 @@ struct LocalVersion {
 
 fn install_dir() -> Result<PathBuf, String> {
     if let Ok(current_dir) = env::current_dir() {
-        if current_dir.join(LOCAL_VERSION_FILE).exists() || current_dir.join(client_binary_name()).exists() {
+        if is_install_dir(&current_dir) && is_writable_dir(&current_dir) {
             return Ok(current_dir);
         }
 
         if let Some(parent) = current_dir.parent() {
-            if parent.join(LOCAL_VERSION_FILE).exists() || parent.join(client_binary_name()).exists() {
+            if is_install_dir(parent) && is_writable_dir(parent) {
                 return Ok(parent.to_path_buf());
             }
         }
@@ -55,7 +56,7 @@ fn install_dir() -> Result<PathBuf, String> {
         .ok_or_else(|| "Nao foi possivel localizar a pasta do launcher.".to_string())?;
 
     for _ in 0..6 {
-        if dir.join(LOCAL_VERSION_FILE).exists() || dir.join(client_binary_name()).exists() {
+        if is_install_dir(&dir) && is_writable_dir(&dir) {
             return Ok(dir);
         }
 
@@ -64,9 +65,11 @@ fn install_dir() -> Result<PathBuf, String> {
         }
     }
 
-    exe.parent()
-        .map(Path::to_path_buf)
-        .ok_or_else(|| "Nao foi possivel localizar a pasta do launcher.".to_string())
+    if let Some(home_install_dir) = find_home_install_dir() {
+        return Ok(home_install_dir);
+    }
+
+    Err("Nao foi possivel localizar uma pasta gravavel do Naruto Old War. Extraia o ZIP em Downloads, Mesa ou Documentos e abra o launcher por essa pasta.".to_string())
 }
 
 fn client_binary_name() -> &'static str {
@@ -79,6 +82,69 @@ fn client_binary_name() -> &'static str {
 
 fn version_file_path() -> Result<PathBuf, String> {
     Ok(install_dir()?.join(LOCAL_VERSION_FILE))
+}
+
+fn is_install_dir(dir: &Path) -> bool {
+    dir.join(LOCAL_VERSION_FILE).exists() || dir.join(client_binary_name()).exists()
+}
+
+fn is_writable_dir(dir: &Path) -> bool {
+    let probe = dir.join(".now-write-test");
+
+    match fs::write(&probe, b"ok") {
+        Ok(_) => {
+            let _ = fs::remove_file(probe);
+            true
+        }
+        Err(_) => false,
+    }
+}
+
+fn find_home_install_dir() -> Option<PathBuf> {
+    let home = env::var_os("HOME").map(PathBuf::from)?;
+    let roots = ["Downloads", "Desktop", "Documents"];
+
+    for root in roots {
+        let root_path = home.join(root);
+        if let Some(found) = find_install_dir_below(&root_path, 4) {
+            return Some(found);
+        }
+    }
+
+    None
+}
+
+fn find_install_dir_below(root: &Path, max_depth: usize) -> Option<PathBuf> {
+    if max_depth == 0 || !root.is_dir() {
+        return None;
+    }
+
+    if root.join(LAUNCHER_APP_NAME).exists() && is_install_dir(root) && is_writable_dir(root) {
+        return Some(root.to_path_buf());
+    }
+
+    let entries = fs::read_dir(root).ok()?;
+
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if !path.is_dir() {
+            continue;
+        }
+
+        if path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .is_some_and(|name| name.ends_with(".app") || name == "Library")
+        {
+            continue;
+        }
+
+        if let Some(found) = find_install_dir_below(&path, max_depth - 1) {
+            return Some(found);
+        }
+    }
+
+    None
 }
 
 fn read_local_version() -> String {
