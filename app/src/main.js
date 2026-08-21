@@ -86,7 +86,7 @@ async function loadLocalVersion() {
 }
 
 async function checkUpdates() {
-  setProgress(12);
+  setProgress(10);
   setStatus("Verificando atualizações", "Consultando o manifesto mais recente do cliente.");
   checkButton.disabled = true;
   updateButton.disabled = true;
@@ -97,7 +97,7 @@ async function checkUpdates() {
     latestManifest = await invoke("check_updates", { manifestUrl });
     remoteVersion.textContent = `Online: ${latestManifest.version}`;
     renderChangelog(latestManifest.changelog);
-    setProgress(latestManifest.needsUpdate ? 45 : 100);
+    setProgress(100);
 
     if (latestManifest.needsUpdate) {
       setStatus("Atualização disponível", "Baixe a nova versão antes de entrar no jogo.");
@@ -122,12 +122,13 @@ async function installUpdate() {
     await checkUpdates();
   }
 
-  setProgress(8);
+  setProgress(0);
   setStatus("Baixando atualização", "Aguarde enquanto o launcher prepara o cliente.");
   updateButton.disabled = true;
   setClientReadyToPlay(false);
 
   try {
+    setProgress(20);
     await invoke("install_update", { manifest: latestManifest });
     setProgress(100);
     await loadLocalVersion();
