@@ -55,6 +55,16 @@ FileStream::FileStream(std::string name, const std::string_view buffer) :
     memcpy(&m_data[0], &buffer[0], buffer.length());
 }
 
+FileStream::FileStream(std::string name, std::vector<uint8_t>&& buffer) :
+    m_data(std::move(buffer)),
+    m_name(std::move(name)),
+    m_fileHandle(nullptr),
+    m_pos(0),
+    m_writeable(false),
+    m_caching(true)
+{
+}
+
 FileStream::~FileStream()
 {
 #ifndef NDEBUG

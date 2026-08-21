@@ -1,0 +1,3 @@
+#pragma once
+
+#define OTCLIENT_ASSET_KEY_HEX "@OTCLIENT_ASSET_KEY_HEX@"

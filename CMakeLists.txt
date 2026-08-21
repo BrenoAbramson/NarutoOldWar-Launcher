@@ -27,6 +27,9 @@ endif()
 
 option(OTCLIENT_BUILD_CLIENT "Build client executable" ON)
 option(OTCLIENT_BUILD_TESTS "Build unit tests" OFF)
+option(OTCLIENT_BUILD_ASSET_PACKER "Build the protected client-assets packer" OFF)
+option(OTCLIENT_PROTECTED_ASSETS "Read Tibia.dat and Tibia.spr from assets.sec" OFF)
+set(OTCLIENT_ASSET_KEY_HEX "" CACHE STRING "64 hexadecimal characters used to decrypt assets.sec")
 set(VCPKG_MANIFEST_FEATURES "${VCPKG_MANIFEST_FEATURES}" CACHE STRING "vcpkg manifest features")
 
 if (VCPKG_TARGET_ANDROID)
@@ -34,12 +37,6 @@ if (VCPKG_TARGET_ANDROID)
 	set(Android_INCLUDES ${Android_INCLUDES} ${CMAKE_SOURCE_DIR}/android/app/libs/include)
 	set(Android_LIBRARIES ${Android_LIBRARIES} ${CMAKE_SOURCE_DIR}/android/app/libs/lib/${CMAKE_ANDROID_ARCH_ABI})
 	include_directories(Android_INCLUDES)
-endif()
-
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.19)
-	include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/SharedBuildCache.cmake")
-elseif(DEFINED ENV{CANARY_SHARED_CACHE_ROOT} OR DEFINED CANARY_SHARED_CACHE_ROOT)
-	message(WARNING "Shared build caching requires CMake 3.19 or newer; using build-local vcpkg storage.")
 endif()
 
 # *****************************************************************************
@@ -152,6 +149,14 @@ endif()
 
 # Src
 add_subdirectory(src)
+
+if(OTCLIENT_BUILD_ASSET_PACKER AND NOT ANDROID AND NOT WASM)
+    find_package(OpenSSL REQUIRED)
+    add_executable(otclient_asset_packer tools/asset_container_packer.cpp)
+    target_compile_features(otclient_asset_packer PRIVATE cxx_std_20)
+    target_include_directories(otclient_asset_packer PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    target_link_libraries(otclient_asset_packer PRIVATE OpenSSL::Crypto)
+endif()
 
 if(OTCLIENT_BUILD_TESTS AND NOT ANDROID)
     if(NOT "tests" IN_LIST VCPKG_MANIFEST_FEATURES)

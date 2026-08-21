@@ -2627,8 +2627,18 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg) const
     }
 
     const uint8_t soul = g_game.getFeature(Otc::GameSoul) ? msg->getU8() : 0;
-    const uint16_t stamina = g_game.getFeature(Otc::GamePlayerStamina) ? msg->getU16() : 0;
-    const uint16_t baseSpeed = g_game.getFeature(Otc::GameSkillsBase) ? msg->getU16() : 0;
+	const uint16_t stamina = g_game.getFeature(Otc::GamePlayerStamina) ? msg->getU16() : 0;
+	uint16_t attackTotal = 0;
+	uint16_t defenseTotal = 0;
+	std::string attackBreakdown;
+	std::string defenseBreakdown;
+	if (g_game.getClientVersion() == 781) {
+		attackTotal = msg->getU16();
+		defenseTotal = msg->getU16();
+		attackBreakdown = msg->getString();
+		defenseBreakdown = msg->getString();
+	}
+	const uint16_t baseSpeed = g_game.getFeature(Otc::GameSkillsBase) ? msg->getU16() : 0;
     const uint16_t regeneration = g_game.getFeature(Otc::GamePlayerRegenerationTime) ? msg->getU16() : 0;
     const uint16_t training = g_game.getFeature(Otc::GameOfflineTrainingTime) ? msg->getU16() : 0;
 
@@ -2658,7 +2668,11 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg) const
     else
         m_localPlayer->setManaShield(0, 0);
     m_localPlayer->setStamina(stamina);
-    m_localPlayer->setSoul(soul);
+	m_localPlayer->setSoul(soul);
+	if (g_game.getClientVersion() == 781) {
+		m_localPlayer->setAttackInfo(attackTotal, 0, attackBreakdown);
+		m_localPlayer->setDefenseInfo(defenseTotal, 0, 0, 0, 0, 0, defenseBreakdown);
+	}
     m_localPlayer->setBaseSpeed(baseSpeed);
     m_localPlayer->setRegenerationTime(regeneration);
     m_localPlayer->setOfflineTrainingTime(training);
@@ -7141,24 +7155,8 @@ void ProtocolGame::parseClientEvent(const InputMessagePtr& msg)
             g_lua.callGlobalField("g_game", "onClientEvent", type, itemId, message);
             break;
         }
-        case Otc::CLIENT_EVENT_TYPE_BOUNTY_TASK: {
-            const auto taskId = msg->getU16();
-            g_lua.callGlobalField("g_game", "onClientEvent", type, taskId);
-            break;
-        }
-        case Otc::CLIENT_EVENT_TYPE_WEEKLY_TASK: {
-            const auto raceId = msg->getU16();
-            g_lua.callGlobalField("g_game", "onClientEvent", type, raceId);
-            break;
-        }
-        case Otc::CLIENT_EVENT_TYPE_SPELL_UNLOCKED: {
-            const auto spellId = msg->getU32();
-            g_lua.callGlobalField("g_game", "onClientEvent", type, spellId);
-            break;
-        }
         default:
-            g_logger.warning(std::format("[ProtocolGame::parseClientEvent] Unknown event type {}", static_cast<uint8_t>(type)));
-            break;
+            throw stdext::exception("[ProtocolGame::parseClientEvent] Unknown event type {}", static_cast<uint8_t>(type));
     }
 }
 

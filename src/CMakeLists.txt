@@ -338,6 +338,7 @@ set(SOURCE_FILES
         framework/core/logger.cpp
         framework/core/module.cpp
         framework/core/modulemanager.cpp
+        framework/core/protectedassetcontainer.cpp
         framework/core/resourcemanager.cpp
         framework/core/scheduledevent.cpp
         framework/core/unzipper.cpp
@@ -552,6 +553,25 @@ elseif(UNIX AND NOT ANDROID AND NOT WASM)
 endif()
 
 add_library(otclient_core STATIC ${SOURCE_FILES})
+
+if(OTCLIENT_PROTECTED_ASSETS)
+  string(LENGTH "${OTCLIENT_ASSET_KEY_HEX}" OTCLIENT_ASSET_KEY_LENGTH)
+  if(NOT OTCLIENT_ASSET_KEY_LENGTH EQUAL 64 OR NOT OTCLIENT_ASSET_KEY_HEX MATCHES "^[0-9A-Fa-f]+$")
+    message(FATAL_ERROR "OTCLIENT_PROTECTED_ASSETS requires OTCLIENT_ASSET_KEY_HEX with exactly 64 hexadecimal characters")
+  endif()
+  if(NOT OPENSSL_FOUND)
+    message(FATAL_ERROR "OTCLIENT_PROTECTED_ASSETS requires OpenSSL")
+  endif()
+  configure_file(
+    ${CMAKE_SOURCE_DIR}/cmake/ProtectedAssetsConfig.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/generated/ProtectedAssetsConfig.h
+    @ONLY
+  )
+  target_include_directories(otclient_core PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated)
+  target_compile_definitions(otclient_core PRIVATE OTCLIENT_PROTECTED_ASSETS=1)
+else()
+  target_compile_definitions(otclient_core PRIVATE OTCLIENT_PROTECTED_ASSETS=0)
+endif()
 
 target_link_libraries(otclient_core PRIVATE unofficial::inih::inireader)
 
@@ -1050,9 +1070,10 @@ else() # Linux
 endif()
 
 if(APPLE AND NOT ANDROID AND NOT WASM)
-  set(MACOSX_BUNDLE_BUNDLE_NAME "OTClient")
-  set(MACOSX_BUNDLE_DISPLAY_NAME "OTClient")
-  set(MACOSX_BUNDLE_IDENTIFIER "com.otclient.otclient")
+  set(MACOSX_BUNDLE_BUNDLE_NAME "Naruto Old War")
+  set(MACOSX_BUNDLE_DISPLAY_NAME "Naruto Old War")
+  set(MACOSX_BUNDLE_EXECUTABLE_NAME "OTClient")
+  set(MACOSX_BUNDLE_IDENTIFIER "com.narutooldwar.client")
   set(MACOSX_BUNDLE_VERSION "${VERSION}")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION}")
   set(MACOSX_BUNDLE_COPYRIGHT "Copyright © 2024")
@@ -1073,7 +1094,7 @@ if(APPLE AND NOT ANDROID AND NOT WASM)
     MACOSX_BUNDLE_ICON_FILE "OTClient"
   )
 
-  add_custom_command(TARGET ${PROJECT_NAME}
+ add_custom_command(TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
       "${CMAKE_SOURCE_DIR}/cmake/OTClient.icns"
@@ -1082,6 +1103,32 @@ if(APPLE AND NOT ANDROID AND NOT WASM)
     VERBATIM
   )
  endif()
+
+if(OTCLIENT_PROTECTED_ASSETS AND (APPLE OR WIN32))
+  if(APPLE)
+    set(OTCLIENT_RUNTIME_DATA_DIR "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources")
+  else()
+    set(OTCLIENT_RUNTIME_DATA_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+  endif()
+
+  add_custom_command(TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${OTCLIENT_RUNTIME_DATA_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/data" "${OTCLIENT_RUNTIME_DATA_DIR}/data"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/modules" "${OTCLIENT_RUNTIME_DATA_DIR}/modules"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/mods" "${OTCLIENT_RUNTIME_DATA_DIR}/mods"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/init.lua" "${OTCLIENT_RUNTIME_DATA_DIR}/init.lua"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/meta.lua" "${OTCLIENT_RUNTIME_DATA_DIR}/meta.lua"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/config.ini" "${OTCLIENT_RUNTIME_DATA_DIR}/config.ini"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/cacert.pem" "${OTCLIENT_RUNTIME_DATA_DIR}/cacert.pem"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${OTCLIENT_RUNTIME_DATA_DIR}/data/things/760"
+    COMMAND ${CMAKE_COMMAND} -E rm -f
+      "${OTCLIENT_RUNTIME_DATA_DIR}/data/things/781/tibia.dat"
+      "${OTCLIENT_RUNTIME_DATA_DIR}/data/things/781/tibia.spr"
+    COMMENT "Packaging protected runtime assets without plaintext Tibia.dat/Tibia.spr"
+    VERBATIM
+  )
+endif()
 
 if(ENABLE_DISCORD_RPC AND NOT ANDROID)
         target_link_libraries(otclient_core PUBLIC ${DISCORDRPC_LIBRARY})

@@ -26,6 +26,7 @@
 
 #include "filestream.h"
 #include "graphicalapplication.h"
+#include "protectedassetcontainer.h"
 #include "framework/graphics/drawpoolmanager.h"
 #include "framework/net/protocolhttp.h"
 #include "framework/platform/platform.h"
@@ -327,6 +328,9 @@ bool ResourceManager::discoverWorkDir(const std::string& existentFile)
     // search for modules directory
     std::string possiblePaths[] = { g_platform.getCurrentDir(),
                                     g_resources.getBaseDir(),
+#ifdef __APPLE__
+                                    (std::filesystem::path(g_resources.getBaseDir()) / "Contents/Resources").lexically_normal().generic_string() + "/",
+#endif
                                     g_resources.getBaseDir() + "/game_data/",
                                     g_resources.getBaseDir() + "../",
                                     g_resources.getBaseDir() + "../share/" + g_app.getCompactName() + "/",
@@ -477,7 +481,11 @@ bool ResourceManager::fileExists(const std::string& fileName)
     if (fileName.find("/downloads") != std::string::npos)
         return g_http.getFile(fileName.substr(10)) != nullptr;
 
-    return (PHYSFS_exists(resolvePath(fileName).c_str()) && !directoryExists(fileName));
+    const auto fullPath = resolvePath(fileName);
+    if (PHYSFS_exists(fullPath.c_str()) && !directoryExists(fileName))
+        return true;
+
+    return ProtectedAssetContainer::contains(fullPath);
 }
 
 bool ResourceManager::fileExistsInWorkDir(const std::string& fileName)
@@ -607,9 +615,20 @@ FileStreamPtr ResourceManager::openFile(const std::string& fileName)
 {
     const std::string fullPath = resolvePath(fileName);
 
+    // Protected production builds deliberately prefer assets.sec even when
+    // plaintext development assets are still present in the source tree.
+    if (ProtectedAssetContainer::contains(fullPath)) {
+        if (auto protectedData = ProtectedAssetContainer::read(fullPath); protectedData.has_value())
+            return std::make_shared<FileStream>(fullPath, std::move(*protectedData));
+    }
+
     PHYSFS_File* file = PHYSFS_openRead(fullPath.c_str());
-    if (!file)
+    if (!file) {
+        if (auto protectedData = ProtectedAssetContainer::read(fullPath); protectedData.has_value())
+            return std::make_shared<FileStream>(fullPath, std::move(*protectedData));
+
         throw Exception("unable to open file '{}': {}", fullPath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+    }
     return { std::make_shared<FileStream>(fullPath, file, false) };
 }
 

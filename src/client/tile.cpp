@@ -78,11 +78,29 @@ void Tile::draw(const MapPosInfo& mapRect, const Point& dest, const int flags, L
         return;
     }
 
+    std::vector<ThingPtr> skipped_non_walkable;
     for (const auto& thing : m_things) {
-        if (!thing->isGround() && !thing->isGroundBorder())
+        const bool legacySplash = g_game.getClientVersion() <= 800 && thing->isSplash();
+        if (!thing->isGround() && !thing->isGroundBorder() && !thing->isOnBottom() && !legacySplash)
             break;
+        // delay drawing after NE/SW walking creature
+        if (hasWalkingCreature() && thing->isNotWalkable()) {
+            skipped_non_walkable.push_back(thing);
+            continue;
+        }
 
         drawThing(thing, dest, flags, drawElevation);
+    }
+
+    drawAttachedEffect(dest, dest, lightView, false);
+
+    if (hasCommonItem()) {
+        for (auto& item : std::ranges::reverse_view(m_things)) {
+            // Legacy splashes use ground stack priority and were already drawn
+            // in the lower pass, so corpses and creatures remain above them.
+            if (!item->isCommon() || (g_game.getClientVersion() <= 800 && item->isSplash())) continue;
+            drawThing(item, dest, flags, drawElevation);
+        }
     }
 
     // when walking diagonally over a tile that has a non-walkable object on it (for example - a tree) the creature should be drawn behind it
@@ -110,24 +128,8 @@ void Tile::draw(const MapPosInfo& mapRect, const Point& dest, const int flags, L
         g_drawPool.resetDrawOrder();
     }
 
-    for (const auto& thing : m_things) {
-        if (thing->isGround() || thing->isGroundBorder())
-            continue;
-        if (!thing->isOnBottom())
-            break;
-
+    for (const auto& thing : skipped_non_walkable) 
         drawThing(thing, dest, flags, drawElevation);
-    }
-
-
-    drawAttachedEffect(dest, dest, lightView, false);
-
-    if (hasCommonItem()) {
-        for (auto& item : std::ranges::reverse_view(m_things)) {
-            if (!item->isCommon()) continue;
-            drawThing(item, dest, flags, drawElevation);
-        }
-    }
 
     // after we render 2x2 lying corpses, we must redraw previous creatures/ontop above them
     if (m_tilesRedraw) {

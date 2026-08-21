@@ -64,10 +64,10 @@ public:
     void takeScreenshot(uint8_t type);
     void openMultiOfflineTrainingDialog();
     void setFlatDamageHealing(uint16_t flatBonus);
-    void setAttackInfo(uint16_t attackValue, uint8_t attackElement);
+    void setAttackInfo(uint16_t attackValue, uint8_t attackElement, const std::string& breakdown = "");
     void setConvertedDamage(double convertedDamage, uint8_t convertedElement);
     void setImbuements(double lifeLeech, double manaLeech, double critChance, double critDamage, double onslaught);
-    void setDefenseInfo(uint16_t defense, uint16_t armor, uint16_t mantra, double mitigation, double dodge, uint16_t damageReflection);
+    void setDefenseInfo(uint16_t defense, uint16_t armor, uint16_t mantra, double mitigation, double dodge, uint16_t damageReflection, const std::string& breakdown = "");
     void setCombatAbsorbValues(const std::map<uint8_t, double>& absorbValues);
     void setForgeBonuses(double momentum, double transcendence, double amplification);
     void setExperienceRate(Otc::ExperienceRate_t type, uint16_t value);
@@ -233,6 +233,8 @@ private:
     uint16_t m_flatDamageHealing{ 0 };
     uint16_t m_attackValue{ 0 };
     uint16_t m_defense{ 0 };
+    std::string m_attackBreakdown;
+    std::string m_defenseBreakdown;
     uint16_t m_armor{ 0 };
     uint16_t m_mantra{ 0 };
     uint16_t m_damageReflection{ 0 };

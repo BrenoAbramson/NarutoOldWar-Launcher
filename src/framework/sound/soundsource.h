@@ -72,7 +72,7 @@ protected:
     float m_fadeTime{ 0 };
     float m_fadeGain{ 0 };
     float m_gain{ 1.f };
-    uint m_effectSlot{ 0 };
+    uint m_effectId;
 
     FadeState m_fadeState{ NoFading };
 

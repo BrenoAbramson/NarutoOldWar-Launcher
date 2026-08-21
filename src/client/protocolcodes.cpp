@@ -44,7 +44,7 @@ namespace Proto
             messageModesMap[Otc::MessageChannelManagement] = 6;
             messageModesMap[Otc::MessageChannel] = 7;
             messageModesMap[Otc::MessageChannelHighlight] = 8;
-            messageModesMap[Otc::MessageSpell] = 9;
+            messageModesMap[Otc::MessageSpell] = 53;
             messageModesMap[Otc::MessageNpcFromStartBlock] = 10;
             messageModesMap[Otc::MessageNpcFrom] = 11;
             messageModesMap[Otc::MessageNpcTo] = 12;
@@ -95,7 +95,7 @@ namespace Proto
             messageModesMap[Otc::MessageChannelManagement] = 6;
             messageModesMap[Otc::MessageChannel] = 7;
             messageModesMap[Otc::MessageChannelHighlight] = 8;
-            messageModesMap[Otc::MessageSpell] = 9;
+            messageModesMap[Otc::MessageSpell] = 53;
             messageModesMap[Otc::MessageNpcFromStartBlock] = 10;
             messageModesMap[Otc::MessageNpcFrom] = 11;
             messageModesMap[Otc::MessageNpcTo] = 12;
@@ -210,7 +210,10 @@ namespace Proto
             messageModesMap[Otc::MessageGamemasterPrivateFrom] = 11;
             messageModesMap[Otc::MessageGamemasterPrivateTo] = 11;
             messageModesMap[Otc::MessageChannelHighlight] = 12;
-            // 13, 14, 15 ??
+            // Modo customizado do servidor: mostra a palavra magica sobre o
+            // personagem, mas nao a registra no Local Chat.
+            messageModesMap[Otc::MessageSpell] = 53;
+            // 14, 15 ??
             messageModesMap[Otc::MessageMonsterSay] = 16;
             messageModesMap[Otc::MessageMonsterYell] = 17;
             messageModesMap[Otc::MessageWarning] = 18;

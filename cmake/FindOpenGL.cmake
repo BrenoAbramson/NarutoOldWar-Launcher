@@ -51,7 +51,7 @@ ELSE (WIN32)
     # On MacOS X the default method is to use OpenGL.framework.
     # Changing the OPENGL_USE_APPLE_X11 option will allow using
     # OpenGL with X11 instead.
-    OPTION (OPENGL_USE_APPLE_X11 "Use X11 OpenGL on OSX?" ON)
+    OPTION (OPENGL_USE_APPLE_X11 "Use X11 OpenGL on OSX?" OFF)
 
     IF (NOT OPENGL_USE_APPLE_X11)
 
@@ -66,8 +66,8 @@ ELSE (WIN32)
       # Frameworks requires some specific link flags that are not
       # currently present within CMake. Therefore, explicity set
       # the link commands here.
-      SET (OPENGL_gl_LIBRARY "-framework OpenGL" CACHE STRING "OpenGL lib for OSX")
-      SET (OPENGL_glu_LIBRARY "-framework AGL" CACHE STRING "AGL lib for OSX")
+      SET (OPENGL_gl_LIBRARY "-framework OpenGL" CACHE STRING "OpenGL lib for OSX" FORCE)
+      SET (OPENGL_glu_LIBRARY "" CACHE STRING "GLU lib for OSX" FORCE)
 
     ENDIF (NOT OPENGL_USE_APPLE_X11)
 

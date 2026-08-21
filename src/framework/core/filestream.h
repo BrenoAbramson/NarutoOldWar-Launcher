@@ -34,6 +34,7 @@ class FileStream : public std::enable_shared_from_this<FileStream>
 public:
     FileStream(std::string name, PHYSFS_File* fileHandle, bool writeable);
     FileStream(std::string name, std::string_view buffer);
+    FileStream(std::string name, std::vector<uint8_t>&& buffer);
     ~FileStream();
 
     void cache(bool useEnc = false);

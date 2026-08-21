@@ -631,15 +631,16 @@ void LocalPlayer::setFlatDamageHealing(uint16_t flatBonus)
     callLuaField("onFlatDamageHealingChange", flatBonus);
 }
 
-void LocalPlayer::setAttackInfo(uint16_t attackValue, uint8_t attackElement)
+void LocalPlayer::setAttackInfo(uint16_t attackValue, uint8_t attackElement, const std::string& breakdown)
 {
-    if (m_attackValue == attackValue && m_attackElement == attackElement)
+    if (m_attackValue == attackValue && m_attackElement == attackElement && m_attackBreakdown == breakdown)
         return;
 
     m_attackValue = attackValue;
     m_attackElement = attackElement;
+    m_attackBreakdown = breakdown;
 
-    callLuaField("onAttackInfoChange", attackValue, attackElement);
+    callLuaField("onAttackInfoChange", attackValue, attackElement, breakdown);
 }
 
 void LocalPlayer::setConvertedDamage(double convertedDamage, uint8_t convertedElement)
@@ -668,10 +669,10 @@ void LocalPlayer::setImbuements(double lifeLeech, double manaLeech, double critC
     callLuaField("onImbuementsChange", lifeLeech, manaLeech, critChance, critDamage, onslaught);
 }
 
-void LocalPlayer::setDefenseInfo(uint16_t defense, uint16_t armor, uint16_t mantra, double mitigation, double dodge, uint16_t damageReflection)
+void LocalPlayer::setDefenseInfo(uint16_t defense, uint16_t armor, uint16_t mantra, double mitigation, double dodge, uint16_t damageReflection, const std::string& breakdown)
 {
     if (m_defense == defense && m_armor == armor && m_mantra == mantra && m_mitigation == mitigation &&
-        m_dodge == dodge && m_damageReflection == damageReflection)
+        m_dodge == dodge && m_damageReflection == damageReflection && m_defenseBreakdown == breakdown)
         return;
 
     m_defense = defense;
@@ -680,8 +681,9 @@ void LocalPlayer::setDefenseInfo(uint16_t defense, uint16_t armor, uint16_t mant
     m_mitigation = mitigation;
     m_dodge = dodge;
     m_damageReflection = damageReflection;
+    m_defenseBreakdown = breakdown;
 
-    callLuaField("onDefenseInfoChange", defense, armor,mantra, mitigation, dodge, damageReflection);
+    callLuaField("onDefenseInfoChange", defense, armor, mantra, mitigation, dodge, damageReflection, breakdown);
 }
 
 void LocalPlayer::setCombatAbsorbValues(const std::map<uint8_t, double>& absorbValues)

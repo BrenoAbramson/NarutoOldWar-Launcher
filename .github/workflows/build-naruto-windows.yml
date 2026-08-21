@@ -1,0 +1,57 @@
+name: Build Naruto Windows Client
+
+on:
+  push:
+    branches:
+      - codex/windows-client-1.0.6
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Read vcpkg baseline
+        shell: pwsh
+        run: |
+          $baseline = (Get-Content vcpkg.json -Raw | ConvertFrom-Json).'builtin-baseline'
+          "VCPKG_GIT_COMMIT_ID=$baseline" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitURL: https://github.com/microsoft/vcpkg.git
+          vcpkgGitCommitId: ${{ env.VCPKG_GIT_COMMIT_ID }}
+
+      - name: Configure and build
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: windows-release
+          buildPreset: windows-release
+          configurePresetAdditionalArgs: >-
+            ['-DVCPKG_PLATFORM_TOOLSET=v143',
+             '-DOPTIONS_ENABLE_SCCACHE=OFF',
+             '-DOPTIONS_ENABLE_IPO=OFF',
+             '-DOTCLIENT_BUILD_TESTS=OFF',
+             '-DOTCLIENT_PROTECTED_ASSETS=OFF']
+
+      - name: Verify GUI executable
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem build/windows-release/bin -Filter *.exe -Recurse |
+            Where-Object { $_.Name -match 'otclient' } |
+            Select-Object -First 1
+          if (-not $exe) { throw 'OTClient executable was not generated.' }
+          Copy-Item $exe.FullName build/windows-release/bin/OTClient.exe -Force
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v7
+        with:
+          name: NarutoOldWar-Windows-executable
+          path: build/windows-release/bin/OTClient.exe
+          if-no-files-found: error

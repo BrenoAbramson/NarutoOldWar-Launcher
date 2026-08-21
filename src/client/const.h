@@ -286,6 +286,7 @@ namespace Otc
         IconPzBlock = 8192,
         IconPz = 16384,
         IconBleeding = 32768,
+		IconKawarimi = 32768,
         IconHungry = 65536
     };
 
@@ -998,9 +999,6 @@ namespace Otc
         CLIENT_EVENT_TYPE_QUEST = 8,
         CLIENT_EVENT_TYPE_COSMETIC = 9,
         CLIENT_EVENT_TYPE_PROFICIENCY = 10,
-        CLIENT_EVENT_TYPE_BOUNTY_TASK = 11,
-        CLIENT_EVENT_TYPE_WEEKLY_TASK = 12,
-        CLIENT_EVENT_TYPE_SPELL_UNLOCKED = 13,
         CLIENT_EVENT_TYPE_LAST
     };
 
