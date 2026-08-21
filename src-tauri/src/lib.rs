@@ -278,12 +278,17 @@ fn launch_client() -> Result<(), String> {
 
     #[cfg(target_os = "windows")]
     {
+        use std::os::windows::process::CommandExt;
+
+        const CREATE_NO_WINDOW: u32 = 0x08000000;
+
         let exe_path = base_dir.join(client_binary_name());
         if !exe_path.exists() {
             return Err(format!("Cliente nao encontrado em {}", exe_path.display()));
         }
 
         Command::new(exe_path)
+            .creation_flags(CREATE_NO_WINDOW)
             .spawn()
             .map_err(|error| error.to_string())?;
     }
