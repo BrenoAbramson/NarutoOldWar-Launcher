@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naruto Old War Launcher</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="main-panel">
+        <div class="brand">
+          <span class="mark">NOW</span>
+          <div>
+            <h1>Naruto Old War</h1>
+            <p>Launcher oficial</p>
+          </div>
+        </div>
+
+        <div class="status-panel">
+          <p class="eyebrow">Status</p>
+          <h2 id="statusTitle">Pronto para verificar atualizações</h2>
+          <p id="statusText">Clique em verificar para buscar a versão mais recente do cliente.</p>
+          <div class="progress-track" aria-label="Progresso da atualização">
+            <span id="progressBar"></span>
+          </div>
+          <div class="meta-row">
+            <span id="localVersion">Local: --</span>
+            <span id="remoteVersion">Online: --</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="checkButton" class="secondary">Verificar</button>
+          <button id="updateButton" class="secondary" disabled>Atualizar</button>
+          <button id="playButton" class="primary">Jogar</button>
+        </div>
+      </section>
+
+      <aside class="notes">
+        <div class="notes-header">
+          <p class="eyebrow">Atualização</p>
+          <h3>Novidades</h3>
+        </div>
+        <ul id="changelog">
+          <li>O changelog aparecerá aqui quando o launcher consultar o servidor.</li>
+        </ul>
+      </aside>
+    </main>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

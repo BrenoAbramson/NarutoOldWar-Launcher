@@ -1,0 +1,14 @@
+{
+  "version": "1.0.1",
+  "changelog": [
+    "Nova musica na tela de login",
+    "Sistema de stages de experiencia",
+    "Ajustes iniciais para atualizacao automatica"
+  ],
+  "windows": {
+    "url": "https://github.com/BrenoAbramson/Servidor/releases/download/client-1.0.1/OTClient-windows.zip"
+  },
+  "macos": {
+    "url": "https://github.com/BrenoAbramson/Servidor/releases/download/client-1.0.1/OTClient-macos.zip"
+  }
+}

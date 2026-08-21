@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "changelog": [
+    "Launcher inicial do Naruto Old War",
+    "Atualizador por ZIP preparado para macOS e Windows",
+    "Botao Jogar configurado para abrir o OTClient"
+  ],
+  "windows": {
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.0/OTClient-windows.zip"
+  },
+  "macos": {
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.0/OTClient-macos.zip"
+  }
+}

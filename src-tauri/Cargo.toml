@@ -1,0 +1,20 @@
+[package]
+name = "naruto-old-war-launcher"
+version = "0.1.0"
+description = "Launcher e atualizador do Naruto Old War"
+authors = ["Naruto Old War"]
+edition = "2021"
+
+[lib]
+name = "naruto_old_war_launcher_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = [] }
+reqwest = { version = "0.12", features = ["blocking", "json", "rustls-tls"], default-features = false }
+zip = "2"
