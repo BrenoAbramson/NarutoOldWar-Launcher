@@ -1,16 +1,17 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "changelog": [
     "Som e musica ativados por padrao.",
     "Volume da musica configurado para 10.",
     "Servidor padrao definido como 100.120.164.98.",
     "Porta padrao definida como 7171.",
     "Versao do client definida como 781.",
-    "Pacote Windows atualizado para usar o cliente OpenGL.",
-    "Corrigido problema de tela azul no mapa em alguns PCs Windows."
+    "Pacote Windows usando o cliente OpenGL.",
+    "Tibia.dat e Tibia.spr do Windows sincronizados com o cliente correto.",
+    "Corrigido problema de tela azul no mapa ao entrar com personagens novos."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.3/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.4/OTClient-windows.zip"
   },
   "macos": {
     "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.2/OTClient-macos.zip"
