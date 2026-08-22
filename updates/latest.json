@@ -1,18 +1,14 @@
 {
-  "version": "1.0.5",
+  "version": "1.0.6",
   "changelog": [
-    "Som e musica ativados por padrao.",
-    "Volume da musica configurado para 10.",
-    "Servidor padrao definido como 100.120.164.98.",
-    "Porta padrao definida como 7171.",
-    "Versao do client definida como 781.",
-    "Pacote Windows reorganizado com a mesma base de arquivos do cliente Mac.",
-    "Removida estrutura antiga/incompativel de things 760 do pacote Windows.",
-    "Tibia.dat e Tibia.spr do Windows sincronizados com o cliente correto.",
-    "Mantidas as configuracoes padrao de IP, porta, versao 781 e audio."
+    "Cliente Windows recompilado com o codigo atualizado usado pelo cliente Mac.",
+    "Corrigidas incompatibilidades de renderizacao e protocolo causadas pelo executavel antigo.",
+    "Executavel Windows configurado como aplicativo grafico, sem abrir terminal.",
+    "Tibia.dat e Tibia.spr 7.81 validados e sincronizados no pacote.",
+    "Mantidas as configuracoes de IP, porta 7171, versao 781, audio e volume 10."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.5/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.6/OTClient-windows.zip"
   },
   "macos": {
     "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.2/OTClient-macos.zip"
