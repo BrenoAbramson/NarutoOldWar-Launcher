@@ -1,16 +1,13 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "changelog": [
-    "Cliente Windows recompilado com o codigo atualizado usado pelo cliente Mac.",
-    "Corrigidas incompatibilidades de renderizacao e protocolo causadas pelo executavel antigo.",
-    "Executavel Windows configurado como aplicativo grafico, sem abrir terminal.",
-    "Tibia.dat e Tibia.spr 7.81 validados e sincronizados no pacote.",
-    "Mantidas as configuracoes de IP, porta 7171, versao 781, audio e volume 10."
+    "Novo item adicionado: 'bandanda de Konoha' (item de cabeça).",
+    "Adicionado aos npcs: Neji, Uzumaki, Aburame, Hinata"
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.6/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.7/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.6/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.7/OTClient-macos.zip"
   }
 }
