@@ -1,9 +1,10 @@
 {
   "name": "naruto-old-war-launcher",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "scripts": {
+    "tauri": "tauri",
     "dev": "tauri dev",
     "build": "tauri build",
     "preview": "npx serve app"

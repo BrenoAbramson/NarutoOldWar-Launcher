@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "Naruto Old War Launcher 0.1.1"
+          releaseName: "Naruto Old War Launcher 0.1.2"
           releaseBody: "Ao iniciar o cliente com sucesso, o launcher agora fecha automaticamente."
           releaseDraft: false
           prerelease: false
