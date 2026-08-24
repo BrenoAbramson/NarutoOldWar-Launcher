@@ -269,7 +269,7 @@ fn install_update(manifest: UpdateManifest) -> Result<String, String> {
 }
 
 #[tauri::command]
-fn launch_client() -> Result<(), String> {
+fn launch_client(app: tauri::AppHandle) -> Result<(), String> {
     let base_dir = install_dir()?;
 
     #[cfg(target_os = "macos")]
@@ -312,6 +312,7 @@ fn launch_client() -> Result<(), String> {
             .map_err(|error| error.to_string())?;
     }
 
+    app.exit(0);
     Ok(())
 }
 
