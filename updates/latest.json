@@ -1,12 +1,10 @@
 {
-  "version": "1.0.10",
+  "version": "1.0.11",
   "changelog": [
-    "macOS: corrigida a janela do cliente que era criada com tamanho zero.",
-    "macOS: corrigida a compatibilidade do framebuffer com o OpenGL legado.",
-    "Windows: mesmo cliente da versao 1.0.9, sem alteracoes."
+    "Windows: atualizacao dos arquivos da pasta data."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.10/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.11/OTClient-windows.zip"
   },
   "macos": {
     "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.10/OTClient-macos.zip"
