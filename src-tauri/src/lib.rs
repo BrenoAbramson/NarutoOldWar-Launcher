@@ -8,6 +8,9 @@ use std::{
     process::Command,
 };
 
+#[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
+
 const LOCAL_VERSION_FILE: &str = "launcher-version.json";
 const LAUNCHER_APP_NAME: &str = "Naruto Old War Launcher.app";
 
@@ -218,6 +221,12 @@ fn extract_zip(zip_path: &Path, destination: &Path) -> Result<(), String> {
 
         let mut output = File::create(&output_path).map_err(|error| error.to_string())?;
         io::copy(&mut entry, &mut output).map_err(|error| error.to_string())?;
+
+        #[cfg(unix)]
+        if let Some(mode) = entry.unix_mode() {
+            fs::set_permissions(&output_path, fs::Permissions::from_mode(mode))
+                .map_err(|error| error.to_string())?;
+        }
     }
 
     Ok(())
@@ -270,8 +279,18 @@ fn launch_client() -> Result<(), String> {
             return Err(format!("Cliente nao encontrado em {}", app_path.display()));
         }
 
+        let user_dir = env::var_os("HOME")
+            .map(PathBuf::from)
+            .ok_or_else(|| "Nao foi possivel localizar a pasta do usuario.".to_string())?
+            .join("Library/Application Support/Naruto Old War");
+        fs::create_dir_all(&user_dir).map_err(|error| error.to_string())?;
+
         Command::new("open")
+            .arg("-n")
             .arg(app_path)
+            .arg("--args")
+            .arg("--user-dir")
+            .arg(user_dir)
             .spawn()
             .map_err(|error| error.to_string())?;
     }
