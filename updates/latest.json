@@ -1,12 +1,13 @@
 {
-  "version": "1.0.8",
+  "version": "1.0.9",
   "changelog": [
-    "Atualizados os arquivos de objetos e sprites do cliente."
+    "Windows: cliente abre sem a janela de terminal.",
+    "macOS: corrigida a falha de audio que impedia a janela de permanecer aberta."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.8/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.9/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.8/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.9/OTClient-macos.zip"
   }
 }
