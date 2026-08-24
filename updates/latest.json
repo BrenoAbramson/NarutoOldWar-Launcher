@@ -1,13 +1,12 @@
 {
-  "version": "1.0.7",
+  "version": "1.0.8",
   "changelog": [
-    "Novo item adicionado: 'bandanda de Konoha' (item de cabeça).",
-    "Adicionado aos npcs: Neji, Uzumaki, Aburame, Hinata"
+    "Atualizados os arquivos de objetos e sprites do cliente."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.7/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.8/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.7/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.8/OTClient-macos.zip"
   }
 }
