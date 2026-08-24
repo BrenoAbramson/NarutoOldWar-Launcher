@@ -1,6 +1,6 @@
 [package]
 name = "naruto-old-war-launcher"
-version = "0.1.2"
+version = "0.1.3"
 description = "Launcher e atualizador do Naruto Old War"
 authors = ["Naruto Old War"]
 edition = "2021"
