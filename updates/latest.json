@@ -1,12 +1,12 @@
 {
   "version": "1.0.11",
   "changelog": [
-    "Windows: atualizacao dos arquivos da pasta data."
+    "Windows e macOS: atualizacao dos arquivos da pasta data."
   ],
   "windows": {
     "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.11/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.10/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.11/OTClient-macos.zip"
   }
 }
