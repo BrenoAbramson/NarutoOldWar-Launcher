@@ -1,14 +1,14 @@
 {
-  "version": "1.0.16",
+  "version": "1.0.17",
   "changelog": [
-    "Ajustado os NPCs de clan: Hatake, Hinata, Inuzuka, Chouji, Lee, Obito, Neji, Sai, Sakura, Shikamaru, Shizune, Yamato",
-    "Teste da skin nova da tsunade feita pelo Gabiru"
+    "Corrigido um congelamento ao receber varios jutsus de uma vez, inclusive ao escolher clan com NPCs.",
+    "A lista de Jutsus e a barra inferior agora fazem apenas uma atualizacao consolidada.",
+    "O arquivo otclient.log agora e salvo na pasta de usuario para facilitar diagnosticos no Windows e macOS."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.16/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.17/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.16/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.17/OTClient-macos.zip"
   }
-
 }
