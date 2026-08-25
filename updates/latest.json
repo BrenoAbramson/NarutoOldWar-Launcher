@@ -1,14 +1,14 @@
 {
-  "version": "1.0.17",
+  "version": "1.0.19",
   "changelog": [
-    "Corrigido um congelamento ao receber varios jutsus de uma vez, inclusive ao escolher clan com NPCs.",
-    "A lista de Jutsus e a barra inferior agora fazem apenas uma atualizacao consolidada.",
-    "O arquivo otclient.log agora e salvo na pasta de usuario para facilitar diagnosticos no Windows e macOS."
+    "Corrigida a montagem do cliente DirectX para utilizar corretamente os arquivos DAT e SPR atuais.",
+    "O launcher inicia o DirectX por padrao; tambem foram incluidos executaveis DirectX e OpenGL identificados para abertura manual.",
+    "Mantidas as correcoes da lista de jutsus, barra de acoes e geracao do otclient.log."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.17/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.19/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.17/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.19/OTClient-macos.zip"
   }
 }
