@@ -1,13 +1,13 @@
 {
-  "version": "1.0.15",
+  "version": "1.0.16",
   "changelog": [
-    "A barra inferior agora exibe automaticamente os jutsus aprendidos, na mesma ordem da janela de Jutsus.",
-    "A barra e atualizada quando os jutsus ou a classe do personagem mudam."
+    "Ajustado os NPCs de clan: Hatake, Hinata, Inuzuka, Chouji, Lee, Obito, Neji, Sai, Sakura, Shikamaru, Shizune, Yamato",
+    "Teste da skin nova da tsunade feita pelo Gabiru"
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.15/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.16/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.15/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.16/OTClient-macos.zip"
   }
 }
