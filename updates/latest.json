@@ -1,15 +1,15 @@
 {
-  "version": "1.0.20",
+  "version": "1.0.22",
   "changelog": [
-    "Novo cliente DirectX x64 compilado no Windows a partir do codigo-fonte atual.",
-    "Incluidas as correcoes recentes de protocolo que evitam criaturas presas na tela, dessincronizacao e travamentos no Windows.",
-    "Atualizados os arquivos DAT e SPR usados pelo cliente Windows e mantida a geracao dos logs de diagnostico.",
-    "O DirectX e iniciado por padrao; a versao OpenGL continua disponivel como alternativa manual."
+    "Corrigido o encerramento inesperado do cliente no macOS causado por metadados indevidos no pacote 1.0.21.",
+    "A lista de jutsus agora mostra o level necessario no lugar de Magic Level.",
+    "O tooltip da barra de jutsus informa nome, level necessario e consumo de chakra.",
+    "Pacote do macOS extraido, assinado e iniciado com sucesso antes da publicacao."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.20/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.22/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.20/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.22/OTClient-macos.zip"
   }
 }
