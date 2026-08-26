@@ -208,6 +208,16 @@ fn extract_zip(zip_path: &Path, destination: &Path) -> Result<(), String> {
         let Some(enclosed_name) = entry.enclosed_name() else {
             continue;
         };
+
+        // Metadados AppleDouble nao fazem parte do cliente. Se forem extraidos,
+        // o OTClient pode tentar interpretar arquivos `._*.lua` como scripts.
+        if enclosed_name.components().any(|component| {
+            let name = component.as_os_str().to_string_lossy();
+            name == "__MACOSX" || name.starts_with("._")
+        }) {
+            continue;
+        }
+
         let output_path = destination.join(enclosed_name);
 
         if entry.is_dir() {
@@ -261,7 +271,37 @@ fn install_update(manifest: UpdateManifest) -> Result<String, String> {
     let update_zip = install_dir()?.join("update.zip");
 
     fs::write(&update_zip, bytes).map_err(|error| error.to_string())?;
+
+    #[cfg(target_os = "macos")]
+    {
+        let base_dir = install_dir()?;
+        let staging_dir = base_dir.join("update-staging");
+        let staged_client = staging_dir.join(client_binary_name());
+        let installed_client = base_dir.join(client_binary_name());
+
+        if staging_dir.exists() {
+            fs::remove_dir_all(&staging_dir).map_err(|error| error.to_string())?;
+        }
+
+        fs::create_dir_all(&staging_dir).map_err(|error| error.to_string())?;
+        extract_zip(&update_zip, &staging_dir)?;
+
+        if !staged_client.exists() {
+            let _ = fs::remove_dir_all(&staging_dir);
+            return Err("O pacote baixado nao contem OTClient.app.".to_string());
+        }
+
+        if installed_client.exists() {
+            fs::remove_dir_all(&installed_client).map_err(|error| error.to_string())?;
+        }
+
+        fs::rename(&staged_client, &installed_client).map_err(|error| error.to_string())?;
+        let _ = fs::remove_dir_all(&staging_dir);
+    }
+
+    #[cfg(not(target_os = "macos"))]
     extract_zip(&update_zip, &install_dir()?)?;
+
     let _ = fs::remove_file(update_zip);
     write_local_version(&manifest.version)?;
 
