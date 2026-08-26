@@ -1,14 +1,15 @@
 {
-  "version": "1.0.19",
+  "version": "1.0.20",
   "changelog": [
-    "Corrigida a montagem do cliente DirectX para utilizar corretamente os arquivos DAT e SPR atuais.",
-    "O launcher inicia o DirectX por padrao; tambem foram incluidos executaveis DirectX e OpenGL identificados para abertura manual.",
-    "Mantidas as correcoes da lista de jutsus, barra de acoes e geracao do otclient.log."
+    "Novo cliente DirectX x64 compilado no Windows a partir do codigo-fonte atual.",
+    "Incluidas as correcoes recentes de protocolo que evitam criaturas presas na tela, dessincronizacao e travamentos no Windows.",
+    "Atualizados os arquivos DAT e SPR usados pelo cliente Windows e mantida a geracao dos logs de diagnostico.",
+    "O DirectX e iniciado por padrao; a versao OpenGL continua disponivel como alternativa manual."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.19/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.20/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.19/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.20/OTClient-macos.zip"
   }
 }
