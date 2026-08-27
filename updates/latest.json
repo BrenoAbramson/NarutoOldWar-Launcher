@@ -1,15 +1,15 @@
 {
-  "version": "1.0.22",
+  "version": "1.0.23",
   "changelog": [
-    "Corrigido o encerramento inesperado do cliente no macOS causado por metadados indevidos no pacote 1.0.21.",
-    "A lista de jutsus agora mostra o level necessario no lugar de Magic Level.",
-    "O tooltip da barra de jutsus informa nome, level necessario e consumo de chakra.",
-    "Pacote do macOS extraido, assinado e iniciado com sucesso antes da publicacao."
+    "Adicionado suporte visual ao Henge no Jutsu no cliente macOS.",
+    "O Henge agora permite selecionar criaturas e objetos com o mouse.",
+    "O nome e o visual copiados aparecem no mapa, no chat local e na lista de batalha.",
+    "O cliente Windows permanece na versao 1.0.22 estavel ate ser validado em Windows real."
   ],
   "windows": {
     "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.22/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.22/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.23/OTClient-macos.zip"
   }
 }
