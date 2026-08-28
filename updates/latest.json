@@ -1,15 +1,15 @@
 {
-  "version": "1.0.25",
+  "version": "1.0.26",
   "changelog": [
-    "Corrigido o Henge no Jutsu no cliente Windows.",
-    "O Henge permite selecionar criaturas e objetos com o mouse.",
-    "A transformacao agora aparece para os outros jogadores.",
-    "O pacote Windows desta versao utiliza DirectX; o OpenGL retornara em uma atualizacao futura."
+    "Corrigida a selecao de objetos do mapa pelo Henge no Jutsu.",
+    "Postes, arvores, pedras e outras decoracoes agora podem ser selecionados corretamente.",
+    "O chao do SQM nao e mais selecionado no lugar do objeto visivel.",
+    "O pacote Windows desta versao continua utilizando DirectX."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.25/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.26/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.25/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.26/OTClient-macos.zip"
   }
 }
