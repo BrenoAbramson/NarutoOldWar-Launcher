@@ -1,15 +1,15 @@
 {
-  "version": "1.0.23",
+  "version": "1.0.24",
   "changelog": [
     "Adicionado suporte visual ao Henge no Jutsu no cliente macOS.",
     "O Henge agora permite selecionar criaturas e objetos com o mouse.",
     "O nome e o visual copiados aparecem no mapa, no chat local e na lista de batalha.",
-    "O cliente Windows permanece na versao 1.0.22 estavel ate ser validado em Windows real."
+    "Atualizacao 1.0.24 disponibilizada para Windows e macOS."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.22/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.24/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.23/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.24/OTClient-macos.zip"
   }
 }
