@@ -1,15 +1,16 @@
 {
-  "version": "1.0.27",
+  "version": "1.0.29",
   "changelog": [
-    "Jogadores transformados em objetos pelo Henge somem da lista de batalha.",
-    "Ao copiar um player ou monstro, o nome copiado aparece na lista de batalha.",
-    "Ao desfazer o Henge, a entrada e o nome originais sao restaurados.",
-    "Atualizacao somente de Lua, sem recompilacao dos executaveis."
+    "Novo Sistema de Banco com deposito, saque e transferencia entre contas.",
+    "Compras em NPC podem usar o saldo do inventario e complementar com o banco.",
+    "Novo Ranking de Level com o Top 100.",
+    "Ninjutsu, Taijutsu e Genjutsu agora aparecem no painel de habilidades.",
+    "Melhorias de interface, textos e exibicao de saldos."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.27/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.29/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Launcher/releases/download/client-1.0.27/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.29/OTClient-macos.zip"
   }
 }
