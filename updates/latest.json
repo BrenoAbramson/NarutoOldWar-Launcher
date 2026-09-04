@@ -1,15 +1,15 @@
 {
-  "version": "1.0.30",
+  "version": "1.0.32",
   "changelog": [
-    "Novo diagnostico persistente ativado por Ctrl+Shift+D.",
-    "Registro de inconsistencias do mapa, inventario, bags e slots.",
-    "Diagnostico da barra de hotkeys e das quantidades de itens.",
-    "O estado do diagnostico permanece salvo ao reiniciar o cliente."
+    "Correcoes de containers, hotkeys e extended opcodes identificadas pelos diagnosticos da atualizacao 30.",
+    "Ctrl+Shift+D com ativacao unica, diagnostico ampliado e rotacao automatica dos logs.",
+    "Sincronizacao das propriedades de itens entre cliente e servidor para evitar corrupcao visual do mapa.",
+    "Integracao visual do inventario permanente preparada para a migracao segura das bags existentes."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.30/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.32/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.30/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.32/OTClient-macos.zip"
   }
 }
