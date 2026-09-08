@@ -1,13 +1,13 @@
 {
-  "version": "1.0.34",
+  "version": "1.0.35",
   "changelog": [
-    "A skin do inventario permanente agora aparece no slot de mochila.",
-    "O inventario permanente pode ser aberto diretamente pelo proprio slot."
+    "O acesso ao inventario permanente pelo slot de mochila foi corrigido.",
+    "A sincronizacao do inventario foi ajustada para login e relogin."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.34/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.35/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.34/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.35/OTClient-macos.zip"
   }
 }
