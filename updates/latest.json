@@ -1,13 +1,15 @@
 {
-  "version": "1.0.35",
+  "version": "1.0.36",
   "changelog": [
-    "O acesso ao inventario permanente pelo slot de mochila foi corrigido.",
-    "A sincronizacao do inventario foi ajustada para login e relogin."
+    "Novo sistema de troca entre jogadores.",
+    "Troca de recipientes com conteudo e Ryou do banco.",
+    "Novo seletor para os depositos e a aba de entrega.",
+    "DAT e SPR atualizados."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.35/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.36/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.35/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.36/OTClient-macos.zip"
   }
 }
