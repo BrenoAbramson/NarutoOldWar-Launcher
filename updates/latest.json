@@ -1,15 +1,12 @@
 {
-  "version": "1.0.36",
+  "version": "1.0.37",
   "changelog": [
-    "Novo sistema de troca entre jogadores.",
-    "Troca de recipientes com conteudo e Ryou do banco.",
-    "Novo seletor para os depositos e a aba de entrega.",
-    "DAT e SPR atualizados."
+    "O seletor do deposito agora fecha automaticamente ao sair de perto."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.36/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.37/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.36/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.37/OTClient-macos.zip"
   }
 }
