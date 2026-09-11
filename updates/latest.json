@@ -1,13 +1,14 @@
 {
-  "version": "1.0.38",
+  "version": "1.0.39",
   "changelog": [
-    "Os jutsus agora possuem cooldown individual.",
-    "Corrigido o movimento de corpos sobre sangue e outros liquidos."
+    "Agora e possivel criar a conta com email diretamente pela tela de login.",
+    "Agora e possivel criar novos personagens pela lista de personagens.",
+    "Melhorias no login por email e no layout das telas de cadastro e personagens."
   ],
   "windows": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.38/OTClient-windows.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.39/OTClient-windows.zip"
   },
   "macos": {
-    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.38/OTClient-macos.zip"
+    "url": "https://github.com/BrenoAbramson/NarutoOldWar-Client/releases/download/v1.0.39/OTClient-macos.zip"
   }
 }
