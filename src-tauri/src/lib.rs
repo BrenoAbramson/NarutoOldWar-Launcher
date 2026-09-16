@@ -3,10 +3,12 @@ use serde_json::Value;
 use std::{
     env,
     fs::{self, File},
-    io,
+    io::{self, Read, Write},
     path::{Path, PathBuf},
     process::Command,
+    time::Duration,
 };
+use tauri::Emitter;
 
 #[cfg(unix)]
 use std::os::unix::fs::PermissionsExt;
@@ -37,6 +39,14 @@ struct PlatformPackage {
 #[derive(Debug, Deserialize, Serialize)]
 struct LocalVersion {
     version: String,
+}
+
+#[derive(Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct UpdateProgress {
+    downloaded: u64,
+    total: Option<u64>,
+    percent: u8,
 }
 
 fn install_dir() -> Result<PathBuf, String> {
@@ -242,6 +252,113 @@ fn extract_zip(zip_path: &Path, destination: &Path) -> Result<(), String> {
     Ok(())
 }
 
+fn emit_update_progress(
+    app: &tauri::AppHandle,
+    downloaded: u64,
+    total: Option<u64>,
+) -> Result<(), String> {
+    let percent = total
+        .filter(|value| *value > 0)
+        .map(|value| ((downloaded.saturating_mul(100) / value).min(100)) as u8)
+        .unwrap_or(0);
+
+    app.emit(
+        "update-progress",
+        UpdateProgress {
+            downloaded,
+            total,
+            percent,
+        },
+    )
+    .map_err(|error| error.to_string())
+}
+
+fn download_update_once(
+    app: &tauri::AppHandle,
+    client: &reqwest::blocking::Client,
+    url: &str,
+    destination: &Path,
+) -> Result<(), String> {
+    let mut response = client
+        .get(url)
+        .header(reqwest::header::ACCEPT_ENCODING, "identity")
+        .send()
+        .map_err(|error| format!("Falha ao conectar para baixar a atualizacao: {error}"))?
+        .error_for_status()
+        .map_err(|error| format!("O servidor recusou o download da atualizacao: {error}"))?;
+    let expected_size = response.content_length();
+    let mut output = File::create(destination)
+        .map_err(|error| format!("Nao foi possivel criar o arquivo de atualizacao: {error}"))?;
+    let mut buffer = [0_u8; 64 * 1024];
+    let mut downloaded = 0_u64;
+    let mut last_percent = u8::MAX;
+
+    emit_update_progress(app, 0, expected_size)?;
+
+    loop {
+        let read = response
+            .read(&mut buffer)
+            .map_err(|error| format!("A conexao foi interrompida durante o download: {error}"))?;
+        if read == 0 {
+            break;
+        }
+
+        output
+            .write_all(&buffer[..read])
+            .map_err(|error| format!("Nao foi possivel gravar a atualizacao: {error}"))?;
+        downloaded += read as u64;
+
+        let percent = expected_size
+            .filter(|value| *value > 0)
+            .map(|value| ((downloaded.saturating_mul(100) / value).min(100)) as u8)
+            .unwrap_or(0);
+        if percent != last_percent {
+            emit_update_progress(app, downloaded, expected_size)?;
+            last_percent = percent;
+        }
+    }
+
+    output
+        .sync_all()
+        .map_err(|error| format!("Nao foi possivel finalizar o arquivo de atualizacao: {error}"))?;
+
+    if let Some(expected) = expected_size {
+        if downloaded != expected {
+            return Err(format!(
+                "Download incompleto: recebidos {downloaded} de {expected} bytes."
+            ));
+        }
+    }
+
+    emit_update_progress(app, downloaded, expected_size)?;
+    Ok(())
+}
+
+fn download_update(app: &tauri::AppHandle, url: &str, destination: &Path) -> Result<(), String> {
+    let client = reqwest::blocking::Client::builder()
+        .connect_timeout(Duration::from_secs(30))
+        .timeout(Duration::from_secs(30 * 60))
+        .build()
+        .map_err(|error| format!("Nao foi possivel preparar o download: {error}"))?;
+    let mut last_error = String::new();
+
+    for attempt in 1..=3 {
+        let _ = fs::remove_file(destination);
+        match download_update_once(app, &client, url, destination) {
+            Ok(()) => return Ok(()),
+            Err(error) => {
+                last_error = error;
+                let _ = fs::remove_file(destination);
+                if attempt < 3 {
+                    emit_update_progress(app, 0, None)?;
+                }
+            }
+        }
+    }
+
+    Err(format!("O download falhou apos 3 tentativas. {last_error}"))
+}
+
 #[tauri::command]
 fn get_local_version() -> String {
     read_local_version()
@@ -264,13 +381,11 @@ fn check_updates(manifest_url: String) -> Result<UpdateManifest, String> {
 }
 
 #[tauri::command]
-fn install_update(manifest: UpdateManifest) -> Result<String, String> {
+fn install_update(app: tauri::AppHandle, manifest: UpdateManifest) -> Result<String, String> {
     let url = platform_url(&manifest);
-    let response = reqwest::blocking::get(url).map_err(|error| error.to_string())?;
-    let bytes = response.bytes().map_err(|error| error.to_string())?;
     let update_zip = install_dir()?.join("update.zip");
 
-    fs::write(&update_zip, bytes).map_err(|error| error.to_string())?;
+    download_update(&app, &url, &update_zip)?;
 
     #[cfg(target_os = "macos")]
     {

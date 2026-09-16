@@ -12,6 +12,7 @@ const playButton = document.querySelector("#playButton");
 
 let latestManifest = null;
 let clientReadyToPlay = false;
+let removeProgressListener = null;
 
 function hasTauri() {
   return Boolean(window.__TAURI__?.core?.invoke);
@@ -62,6 +63,36 @@ function setStatus(title, text) {
 
 function setProgress(value) {
   progressBar.style.width = `${Math.max(0, Math.min(100, value))}%`;
+}
+
+function formatBytes(value) {
+  if (!Number.isFinite(value) || value <= 0) {
+    return "0 MB";
+  }
+
+  return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+async function listenForUpdateProgress() {
+  if (!hasTauri() || !window.__TAURI__?.event?.listen || removeProgressListener) {
+    return;
+  }
+
+  removeProgressListener = await window.__TAURI__.event.listen("update-progress", ({ payload }) => {
+    const percent = Number(payload?.percent ?? 0);
+    const downloaded = Number(payload?.downloaded ?? 0);
+    const total = Number(payload?.total ?? 0);
+    setProgress(percent);
+
+    if (total > 0) {
+      setStatus(
+        "Baixando atualização",
+        `${percent}% - ${formatBytes(downloaded)} de ${formatBytes(total)}`
+      );
+    } else {
+      setStatus("Reconectando", "O download será retomado em uma nova tentativa.");
+    }
+  });
 }
 
 function setClientReadyToPlay(isReady) {
@@ -128,7 +159,6 @@ async function installUpdate() {
   setClientReadyToPlay(false);
 
   try {
-    setProgress(20);
     await invoke("install_update", { manifest: latestManifest });
     setProgress(100);
     await loadLocalVersion();
@@ -149,11 +179,13 @@ async function play() {
   }
 
   setStatus("Abrindo cliente", "Iniciando Naruto Old War.");
+  playButton.disabled = true;
 
   try {
     await invoke("launch_client");
   } catch (error) {
     setStatus("Não foi possível abrir o cliente", String(error));
+    playButton.disabled = false;
   }
 }
 
@@ -161,4 +193,6 @@ checkButton.addEventListener("click", checkUpdates);
 updateButton.addEventListener("click", installUpdate);
 playButton.addEventListener("click", play);
 
-loadLocalVersion();
+listenForUpdateProgress()
+  .then(loadLocalVersion)
+  .catch((error) => setStatus("Falha ao iniciar", String(error)));
